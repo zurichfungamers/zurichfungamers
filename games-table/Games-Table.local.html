@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZFG Game List</title>
+  <!-- SEO: Meta Description and Keywords -->
+  <meta name="description"
+    content="Explore the best board games for Zurich Fun Gamers. View detailed game lists with player counts, ratings, and mechanisms.">
+  <meta name="keywords"
+    content="Zurich Fun Gamers, board games, party games, family games, game ratings, game mechanisms">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph Tags for Social Sharing -->
+  <meta property="og:title" content="ZFG Game List">
+  <meta property="og:description"
+    content="Explore the best board games with Zurich Fun Gamers. Discover ratings, player information, and more.">
+  <meta property="og:image" content="https://zurichfungamers.com/images/zfg-game-list.jpg">
+  <meta property="og:url" content="https://zurichfungamers.com/list-of-games">
+  <meta property="og:type" content="website">
+  <style>
+    /* Base Styles */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      /* Typography Enhancement */
+      background-color: #f9f9f9;
+      /* Consistent Color Scheme */
+      color: #333;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #4CAF50;
+      /* Consistent Color Scheme */
+    }
+
+    .controls {
+      align-self: stretch;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .controls input,
+    .controls select,
+    .controls button {
+      padding: 8px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .table-container {
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      /* Padding and Spacing Enhancement */
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      /* Consistent Color Scheme */
+      color: white;
+      position: relative;
+      /* For Sort Icons */
+      cursor: pointer;
+    }
+
+    th .sort-icon {
+      margin-left: 5px;
+      font-size: 12px;
+    }
+
+    th:hover {
+      background-color: #45a049;
+      /* Hover Effect Enhancement */
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+      /* Alternate Row Colors (Improved Table Layout) */
+    }
+
+    tr:hover {
+      background-color: #ddd;
+      /* Hover Effect Enhancement */
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    .dark-mode table th {
+      background-color: #1e1e1e;
+    }
+
+    .dark-mode tr:nth-child(even) {
+      background-color: #2c2c2c;
+    }
+
+    .dark-mode tr:hover {
+      background-color: #3d3d3d;
+    }
+
+    /* Fixed Header (Improved Table Layout) */
+    thead {
+      position: sticky;
+      top: 0;
+      background-color: #4CAF50;
+      z-index: 1;
+    }
+
+    /* Additional Visual Enhancements */
+    /* Consistent Color Scheme and Typography */
+    th,
+    td {
+      font-size: 16px;
+      /* Typography Enhancement */
+    }
+
+    /* Enhanced Hover Effects */
+    tr:hover {
+      background-color: #e0f7fa;
+      /* Softer Hover Color */
+    }
+
+    th:hover {
+      background-color: #388e3c;
+      /* Darker Green on Hover */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>ZFG Game List</h2>
+
+    <div class="controls">
+      <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for games..">
+      <select id="seriesFilter" onchange="filterTable()">
+        <option value="">All Series</option>
+      </select>
+      <select id="genreFilter" onchange="filterTable()">
+        <option value="">All Genres</option>
+      </select>
+      <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+
+    <div class="table-container">
+      <table id="gameTable">
+        <thead>
+          <tr>
+            <th id="col-index" onclick="sortTable('index')">Number <span class="sort-icon"></span></th>
+            <th id="col-name" onclick="sortTable('name')">Name <span class="sort-icon"></span></th>
+            <th id="col-optimalPlayers" onclick="sortTable('optimalPlayers')">Best Suited For <span class="sort-icon"></span></th>
+            <th id="col-series" onclick="sortTable('series')">Series <span class="sort-icon"></span></th>
+            <th id="col-minPlayers" onclick="sortTable('minPlayers')">Min Players <span class="sort-icon"></span></th>
+            <th id="col-maxPlayers" onclick="sortTable('maxPlayers')">Max Players <span class="sort-icon"></span></th>
+            <th id="col-playTime" onclick="sortTable('playTime')">Playing Time <span class="sort-icon"></span></th>
+            <th id="col-difficulty" onclick="sortTable('difficulty')">Difficulty <span class="sort-icon"></span></th>
+            <th id="col-rating" onclick="sortTable('rating')">Rating <span class="sort-icon"></span></th>
+            <th id="col-category" onclick="sortTable('category')">Category <span class="sort-icon"></span></th>
+            <th id="col-categoryRank" onclick="sortTable('categoryRank')">Category Ranking <span class="sort-icon"></span></th>
+            <th id="col-genres" onclick="sortTable('genres')">Genres <span class="sort-icon"></span></th>
+            <th id="col-mechanisms" onclick="sortTable('mechanisms')">Mechanisms <span class="sort-icon"></span></th>
+            <th id="col-awards" onclick="sortTable('awards')">Awards Won <span class="sort-icon"></span></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function sorterForNumericColumns(property, nonNumericalValuesFirst) {
+      const numericDefaultValue = nonNumericalValuesFirst ? 0 : Infinity;
+      function parseWithDefault(s) {
+        const n = parseFloat(s);
+        return isFinite(n) ? n : numericDefaultValue;
+      }
+      return (a, b) => parseWithDefault(a[property]) - parseWithDefault(b[property]);
+    }
+
+    function cleanName(name) {
+      return name.replace(/^(the|a)\s+/i, '');
+    }
+
+    function removeEmojis(value) {
+      return value.replaceAll(/[\u{1F300}-\u{1F5FF}\p{RGI_Emoji}]/vg, '');
+    }
+
+    let model = {
+      sorters: {
+        index: (a, b) => a.index - b.index,
+        name: (a, b) => cleanName(a.name).localeCompare(cleanName(b.name)),
+        minPlayers: sorterForNumericColumns('minPlayers', false),
+        maxPlayers: sorterForNumericColumns('maxPlayers', false),
+        optimalPlayers: sorterForNumericColumns('optimalPlayers', false),
+        playTime: sorterForNumericColumns('playTime', false),
+        difficulty: sorterForNumericColumns('difficulty', false),
+        rating: sorterForNumericColumns('rating', false),
+        series: (a, b) => a.series.localeCompare(b.series),
+        category: (a, b) => a.category.localeCompare(b.category),
+        categoryRank: sorterForNumericColumns('categoryRank', false),
+        genres: (a, b) => a.genres.localeCompare(b.genres),
+        mechanisms: (a, b) => a.mechanisms.localeCompare(b.mechanisms),
+        awards: sorterForNumericColumns('awards', true),
+      },
+      sortColumn: null,
+      sortDirection: null,
+      filter: '',
+      genre: '',
+      series: '',
+      data: [],
+    };
+
+    function addOptions(select, property) {
+      const options = new Set(model.data
+        .flatMap(r => removeEmojis(property(r)).split(','))
+        .map(o => o.trim())
+        .filter(o => o)
+        .sort());
+
+      options.forEach(o => {
+        const option = select.appendChild(document.createElement('option'));
+        option.value = option.innerText = o;
+      });
+    }
+
+    addOptions(document.getElementById('seriesFilter'), r => r.series);
+    addOptions(document.getElementById('genreFilter'), r => r.genres);
+
+    function getRowsToDisplay() {
+      let rows = model.data.slice();
+
+      const filter = model.filter?.toLowerCase();
+      if (filter) {
+        rows = rows.filter(r => [r.name, r.series, r.category, r.genres, r.mechanisms].some(c => c.toLowerCase().includes(filter)));
+      }
+
+      const series = model.series?.toLowerCase();
+      if (series) {
+        rows = rows.filter(r => removeEmojis(r.series)
+          .toLowerCase()
+          .split(',')
+          .map(g => g.trim())
+          .includes(series));
+      }
+
+      const genre = model.genre?.toLowerCase();
+      if (genre) {
+        rows = rows.filter(r => removeEmojis(r.genres)
+          .toLowerCase()
+          .split(',')
+          .map(g => g.trim())
+          .includes(genre));
+      }
+
+      const sorter = model.sorters[model.sortColumn];
+      if (sorter) {
+        rows = rows.sort(sorter);
+        if (model.sortDirection === 'desc') {
+          rows = rows.reverse();
+        }
+      }
+
+      return rows;
+    }
+
+    function render() {
+      const tableBody = document.getElementById("gameTable").tBodies[0];
+      Array.from(tableBody.rows).forEach(r => r.remove());
+
+      const rows = getRowsToDisplay();
+      rows.forEach(r => {
+        const row = tableBody.appendChild(document.createElement('tr'));
+
+        [r.index, r.name, r.optimalPlayers, r.series, r.minPlayers, r.maxPlayers, r.playTime, r.difficulty, r.rating, r.category, r.categoryRank, r.genres, r.mechanisms, r.awards]
+          .forEach(v => row.appendChild(document.createElement('td')).innerText = v.toString());
+      });
+    }
+
+    const GamesLocation = 'games.json';
+
+    fetch(GamesLocation).then(r => r.json()).then(games => {
+      model.data = games;
+      render();
+    });
+
+    function sortTable(column) {
+      if (model.sortColumn == column) {
+        model.sortDirection = (model.sortDirection === 'asc' ? 'desc' : 'asc');
+      } else {
+        model.sortColumn = column;
+        model.sortDirection = 'asc';
+      }
+
+      render();
+
+      // Update sort icons
+      updateSortIcons(column, model.sortDirection);
+    }
+
+    function updateSortIcons(column, direction) {
+      // Reset all sort icons
+      document.querySelectorAll('#gameTable th .sort-icon').forEach(icon => icon.textContent = '');
+
+      // Set sort icon for the current column
+      let sortIcon = direction === 'asc' ? '🔼' : '🔽';
+      document.getElementById(`col-${column}`).querySelector('.sort-icon').textContent = sortIcon;
+    }
+
+    function searchTable() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      model.filter = input;
+      render();
+    }
+
+    function filterTable() {
+      let genre = document.getElementById('genreFilter').value;
+      model.genre = genre;
+
+      let series = document.getElementById('seriesFilter').value;
+      model.series = series;
+
+      render();
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+
+</html>
