@@ -237,22 +237,6 @@
       data: [],
     };
 
-    function addOptions(select, property) {
-      const options = new Set(model.data
-        .flatMap(r => removeEmojis(property(r)).split(','))
-        .map(o => o.trim())
-        .filter(o => o)
-        .sort());
-
-      options.forEach(o => {
-        const option = select.appendChild(document.createElement('option'));
-        option.value = option.innerText = o;
-      });
-    }
-
-    addOptions(document.getElementById('seriesFilter'), r => r.series);
-    addOptions(document.getElementById('genreFilter'), r => r.genres);
-
     function getRowsToDisplay() {
       let rows = model.data.slice();
 
@@ -261,23 +245,18 @@
         rows = rows.filter(r => [r.name, r.series, r.category, r.genres, r.mechanisms].some(c => c.toLowerCase().includes(filter)));
       }
 
-      const series = model.series?.toLowerCase();
-      if (series) {
-        rows = rows.filter(r => removeEmojis(r.series)
-          .toLowerCase()
-          .split(',')
-          .map(g => g.trim())
-          .includes(series));
+      function fitsCategory(row, category, value) {
+        return !value ||
+          removeEmojis(category(row))
+            .toLowerCase()
+            .split(',')
+            .map(g => g.trim())
+            .includes(value);
       }
 
-      const genre = model.genre?.toLowerCase();
-      if (genre) {
-        rows = rows.filter(r => removeEmojis(r.genres)
-          .toLowerCase()
-          .split(',')
-          .map(g => g.trim())
-          .includes(genre));
-      }
+      rows = rows
+        .filter(row => fitsCategory(row, r => r.series, model.series?.toLowerCase()))
+        .filter(row => fitsCategory(row, r => r.genres, model.genre?.toLowerCase()));
 
       const sorter = model.sorters[model.sortColumn];
       if (sorter) {
@@ -305,8 +284,24 @@
 
     const GamesLocation = 'https://raw.githubusercontent.com/zurichfungamers/zurichfungamers/main/games-table/games.json';
 
+    function addOptions(select, property) {
+      const options = new Set(model.data
+        .flatMap(r => removeEmojis(property(r)).split(','))
+        .map(o => o.trim())
+        .filter(o => o)
+        .sort());
+
+      options.forEach(o => {
+        const option = select.appendChild(document.createElement('option'));
+        option.value = option.innerText = o;
+      });
+    }
+
     fetch(GamesLocation).then(r => r.json()).then(games => {
       model.data = games;
+      addOptions(document.getElementById('seriesFilter'), r => r.series);
+      addOptions(document.getElementById('genreFilter'), r => r.genres);
+
       render();
     });
 
